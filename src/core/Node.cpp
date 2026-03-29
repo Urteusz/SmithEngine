@@ -1,13 +1,10 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #include "core/Node.h"
 #include <algorithm>
 
 void Node::AddChild(std::unique_ptr<Node> child) {
     child->parent = this;
     children.push_back(std::move(child));
+    /** Po dodaniu dziecka, wywołujemy jego _Ready() */
     children.back()->_Ready();
 }
 

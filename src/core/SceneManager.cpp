@@ -1,7 +1,3 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #include "core/SceneManager.h"
 
 SceneManager::SceneManager() {
@@ -9,6 +5,7 @@ SceneManager::SceneManager() {
     root->name = "Root";
 }
 
+/** Zapytacie się po co ProcessFrame skoro to tylko wrapper, a ja powiem że dlatego żeby nie trzeba było wywoływać root.get() w mainie. */
 void SceneManager::ProcessFrame(float dt) {
     ProcessNode(root.get(), dt);
 }

@@ -1,7 +1,3 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #include "input/InputManager.h"
 
 void InputManager::Bind(int key, const std::string& action) {

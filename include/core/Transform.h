@@ -1,13 +1,10 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
 #include "raylib.h"
 #include "raymath.h"
 
+/** namespace zrobione aby nie kolidowało z innymi bibliotekami */
 namespace smith {
 
     struct Transform {

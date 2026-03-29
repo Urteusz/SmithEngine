@@ -1,7 +1,3 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 

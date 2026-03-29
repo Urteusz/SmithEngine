@@ -1,7 +1,3 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #include "nodes/Node3D.h"
 
 Matrix Node3D::GetWorldTransform() const {

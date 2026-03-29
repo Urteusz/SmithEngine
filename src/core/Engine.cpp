@@ -1,7 +1,3 @@
-//
-// Created by mateu on 29.03.2026.
-//
-
 #include "core/Engine.h"
 #include "raylib.h"
 
