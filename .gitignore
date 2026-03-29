@@ -1,0 +1,32 @@
+# CLion / IDE
+cmake-build-*/
+.idea/
+*.iml
+
+# Build
+build/
+out/
+CMakeUserPresets.json
+compile_commands.json
+
+# Binaries
+*.exe
+*.dll
+*.lib
+*.obj
+*.o
+*.a
+*.so
+*.dylib
+
+# Debug
+*.pdb
+*.ilk
+*.exp
+*.dSYM/
+
+# OS
+Desktop.ini
+
+# raylib FetchContent cache
+_deps/

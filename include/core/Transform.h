@@ -1,0 +1,51 @@
+//
+// Created by mateu on 29.03.2026.
+//
+
+#ifndef TRANSFORM_H
+#define TRANSFORM_H
+
+#include "raylib.h"
+#include "raymath.h"
+
+namespace smith {
+
+    struct Transform {
+        Vector3 position = {0.0f, 0.0f, 0.0f};
+        Vector3 rotation = {0.0f, 0.0f, 0.0f};
+        Vector3 scale    = {1.0f, 1.0f, 1.0f};
+
+        Matrix GetLocalMatrix() const {
+            Matrix matScale = MatrixScale(scale.x, scale.y, scale.z);
+            Matrix matRot   = MatrixRotateXYZ({
+                rotation.x * DEG2RAD,
+                rotation.y * DEG2RAD,
+                rotation.z * DEG2RAD
+            });
+            Matrix matTrans = MatrixTranslate(position.x, position.y, position.z);
+
+            return MatrixMultiply(MatrixMultiply(matScale, matRot), matTrans);
+        }
+
+        // Macierz światowa (z rodzicem)
+        Matrix GetWorldMatrix(const Transform* parent) const {
+            Matrix local = GetLocalMatrix();
+            if (parent) {
+                return MatrixMultiply(local, parent->GetLocalMatrix());
+            }
+            return local;
+        }
+
+        // Przesuń w kierunku lokalnym
+        void Translate(Vector3 offset) {
+            position = Vector3Add(position, offset);
+        }
+
+        void Rotate(Vector3 eulerDeg) {
+            rotation = Vector3Add(rotation, eulerDeg);
+        }
+    };
+
+}
+
+#endif //TRANSFORM_H
