@@ -1,22 +1,20 @@
 #include "core/Engine.h"
 #include "core/Scene3D.h"
 #include "nodes/Node3D.h"
+#include "nodes/MeshNode.h"
 
-// Tymczasowy węzeł testowy — docelowo zastąpi go prawdziwy mesh
-class TestCube : public Node3D {
+class TestPlane : public Node3D {
 public:
     void _Render() override {
-        DrawCube(transform.position, 2.0f, 2.0f, 2.0f, RED);
-        DrawCubeWires(transform.position, 2.0f, 2.0f, 2.0f, MAROON);
+        DrawPlane(transform.position, {10.f, 10.f}, GREEN);
     }
 };
 
-// Tymczasowy węzeł HUD testowy
 class TestLabel : public Node {
 public:
     void _Render() override {
         DrawRectangle(20, 20, 200, 40, BLUE);
-        DrawText("SmithEngine dziala!", 30, 30, 16, RAYWHITE);
+        DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 30, 30, 16, RAYWHITE);
     }
 };
 
@@ -27,7 +25,16 @@ int main() {
     auto scene = std::make_unique<Scene3D>();
     scene->name = "DemoScene";
 
-    scene->AddChild(std::make_unique<TestCube>());
+    auto anvil = std::make_unique<MeshNode>("assets/models/anvil.obj");
+    anvil->name = "Anvil";
+
+    scene->AddChild(std::move(anvil));
+
+    auto plane = std::make_unique<TestPlane>();
+    plane->name = "TestPlane";
+    plane->transform.position.y = -1.0f;
+    scene->AddChild(std::move(plane));
+
 
     scene->hud.AddChild(std::make_unique<TestLabel>());
 
