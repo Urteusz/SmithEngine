@@ -15,6 +15,9 @@ compile_commands.json
 *.lib
 *.obj
 *.o
+
+# Wyjątek — modele 3D w assets są plikami źródłowymi, nie binariami
+!assets/**/*.obj
 *.a
 *.so
 *.dylib
