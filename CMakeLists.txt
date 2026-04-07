@@ -39,6 +39,7 @@ set(HEADERS
         include/core/Transform.h
         include/nodes/Node3D.h
         include/input/InputManager.h
+        include/core/Scene3D.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

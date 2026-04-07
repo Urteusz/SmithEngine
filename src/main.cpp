@@ -1,38 +1,22 @@
 #include "core/Engine.h"
+#include "core/Scene3D.h"
 #include "nodes/Node3D.h"
-#include "input/InputManager.h"
-#include "raylib.h"
 
-class DemoScene : public Node {
+// Tymczasowy węzeł testowy — docelowo zastąpi go prawdziwy mesh
+class TestCube : public Node3D {
 public:
-    Camera3D camera{};
-    InputManager* input = nullptr;
-
-    void _Ready() override {
-        camera.position = Vector3{4.0f, 4.0f, 4.0f};
-        camera.target   = Vector3{0.0f, 0.0f, 0.0f};
-        camera.up       = Vector3{0.0f, 1.0f, 0.0f};
-        camera.fovy     = 45.0f;
-        camera.projection = CAMERA_PERSPECTIVE;
-    }
-
-    void _Process(float dt) override {
-        UpdateCamera(&camera, CAMERA_ORBITAL);
-
-        if (input && input->IsPressed("reset_camera")) {
-            camera.position = Vector3{4.0f, 4.0f, 4.0f};
-            camera.target   = Vector3{0.0f, 0.0f, 0.0f};
-        }
-    }
-
     void _Render() override {
-        BeginMode3D(camera);
-        DrawCube(Vector3{0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, RED);
-        DrawCubeWires(Vector3{0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, MAROON);
-        EndMode3D();
+        DrawCube(transform.position, 2.0f, 2.0f, 2.0f, RED);
+        DrawCubeWires(transform.position, 2.0f, 2.0f, 2.0f, MAROON);
+    }
+};
 
-        DrawRectangle(20, 20, 200, 100, BLUE);
-        DrawText("Dwuwymiarowy obiekt", 30, 60, 16, RAYWHITE);
+// Tymczasowy węzeł HUD testowy
+class TestLabel : public Node {
+public:
+    void _Render() override {
+        DrawRectangle(20, 20, 200, 40, BLUE);
+        DrawText("SmithEngine dziala!", 30, 30, 16, RAYWHITE);
     }
 };
 
@@ -40,13 +24,15 @@ int main() {
     Engine engine;
     engine.Init(1280, 720, "SmithEngine — Demo", 60);
 
-    engine.GetInputManager().Bind(KEY_SPACE, "reset_camera");
+    auto scene = std::make_unique<Scene3D>();
+    scene->name = "DemoScene";
 
-    auto demo = std::make_unique<DemoScene>();
-    demo->name = "DemoScene";
-    demo->input = &engine.GetInputManager();
-    /** Move(demo) przenosi własność obiektu do sceny, nie da się inaczej, bo używamy unique_ptr */
-    engine.GetSceneManager().GetRoot()->AddChild(std::move(demo));
+    scene->AddChild(std::make_unique<TestCube>());
+
+    scene->hud.AddChild(std::make_unique<TestLabel>());
+
+    /** Move(scene) przenosi własność obiektu do sceny, nie da się inaczej, bo używamy unique_ptr */
+    engine.GetSceneManager().GetRoot()->AddChild(std::move(scene));
 
     engine.Run();
     engine.Shutdown();

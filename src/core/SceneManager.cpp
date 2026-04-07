@@ -1,4 +1,5 @@
 #include "core/SceneManager.h"
+#include "core/Scene.h"
 
 SceneManager::SceneManager() {
     root = std::make_unique<Node>();
@@ -28,6 +29,9 @@ void SceneManager::RenderNode(Node* node) {
     if (!node || !node->isActive) return;
 
     node->_Render();
+
+    // Jeśli to scena — ona sama renderuje swoje dzieci
+    if (dynamic_cast<Scene*>(node)) return;
 
     for (auto& child : node->children) {
         RenderNode(child.get());
