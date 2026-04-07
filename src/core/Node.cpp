@@ -8,6 +8,18 @@ void Node::AddChild(std::unique_ptr<Node> child) {
     children.back()->_Ready();
 }
 
+void Node::_ProcessComponents(float dt) {
+    for (auto& [type, component] : components) {
+        if (component) component->_Process(dt);
+    }
+}
+
+void Node::_DestroyComponents() {
+    for (auto& [type, component] : components) {
+        if (component) component->_OnDestroy();
+    }
+}
+
 Node* Node::GetChild(const std::string& childName) {
     for (auto& c : children) {
         if (c->name == childName) return c.get();
