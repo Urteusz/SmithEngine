@@ -24,10 +24,29 @@ public:
         camera.up         = Vector3{0.0f, 1.0f, 0.0f};
         camera.fovy       = 45.0f;
         camera.projection = CAMERA_PERSPECTIVE;
+        DisableCursor();
     }
 
     void _Process(float dt) override {
-        UpdateCamera(&camera, CAMERA_ORBITAL);
+        Vector3 movement = { 0.0f, 0.0f, 0.0f };
+        Vector3 rotation = { 0.0f, 0.0f, 0.0f };
+
+        float speed = 10.0f * dt;
+        float sensitivity = 0.05f;
+
+        if (IsKeyDown(KEY_W)) movement.x += speed;
+        if (IsKeyDown(KEY_S)) movement.x -= speed;
+        if (IsKeyDown(KEY_D)) movement.y += speed;
+        if (IsKeyDown(KEY_A)) movement.y -= speed;
+        if (IsKeyDown(KEY_SPACE)) movement.z += speed;
+        if (IsKeyDown(KEY_LEFT_CONTROL)) movement.z -= speed;
+
+        Vector2 mouseDelta = GetMouseDelta();
+        rotation.x = mouseDelta.x * sensitivity;
+        rotation.y = mouseDelta.y * sensitivity;
+
+        UpdateCameraPro(&camera, movement, rotation, 0.0f);
+
         for (auto& child : hud.children) {
             PropagateProcess(child.get(), dt);
         }
