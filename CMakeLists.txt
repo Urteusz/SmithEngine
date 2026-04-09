@@ -4,6 +4,13 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "" FORCE)
 
 project(SmithEngine VERSION 1.0)
 
+find_program(CCACHE_PATH ccache HINTS ENV PATH)
+if(CCACHE_PATH)
+    message(STATUS "Using ccache: ${CCACHE_PATH}")
+    set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH}")
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH}")
+endif ()
+
 if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()

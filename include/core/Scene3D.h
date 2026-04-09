@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "core/Scene.h"
+#include "input/InputManager.h"
 #include "raylib.h"
 
 #ifndef SCENE3D_H
@@ -17,6 +18,7 @@ class Scene3D : public Scene {
 public:
     Camera3D camera{};
     Node hud;
+    InputManager input;
 
     void _Ready() override {
         camera.position   = Vector3{4.0f, 4.0f, 4.0f};
@@ -24,7 +26,15 @@ public:
         camera.up         = Vector3{0.0f, 1.0f, 0.0f};
         camera.fovy       = 45.0f;
         camera.projection = CAMERA_PERSPECTIVE;
-        DisableCursor();
+
+        input.Bind(KEY_W,            "move_forward");
+        input.Bind(KEY_S,            "move_backward");
+        input.Bind(KEY_D,            "move_right");
+        input.Bind(KEY_A,            "move_left");
+        input.Bind(KEY_SPACE,        "move_up");
+        input.Bind(KEY_LEFT_CONTROL, "move_down");
+
+        input.SetMouseLocked(true);
     }
 
     void _Process(float dt) override {
@@ -34,14 +44,14 @@ public:
         float speed = 10.0f * dt;
         float sensitivity = 0.05f;
 
-        if (IsKeyDown(KEY_W)) movement.x += speed;
-        if (IsKeyDown(KEY_S)) movement.x -= speed;
-        if (IsKeyDown(KEY_D)) movement.y += speed;
-        if (IsKeyDown(KEY_A)) movement.y -= speed;
-        if (IsKeyDown(KEY_SPACE)) movement.z += speed;
-        if (IsKeyDown(KEY_LEFT_CONTROL)) movement.z -= speed;
+        if (input.IsDown("move_forward"))  movement.x += speed;
+        if (input.IsDown("move_backward")) movement.x -= speed;
+        if (input.IsDown("move_right"))    movement.y += speed;
+        if (input.IsDown("move_left"))     movement.y -= speed;
+        if (input.IsDown("move_up"))       movement.z += speed;
+        if (input.IsDown("move_down"))     movement.z -= speed;
 
-        Vector2 mouseDelta = GetMouseDelta();
+        Vector2 mouseDelta = input.MouseDelta();
         rotation.x = mouseDelta.x * sensitivity;
         rotation.y = mouseDelta.y * sensitivity;
 
