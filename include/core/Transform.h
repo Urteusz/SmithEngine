@@ -24,15 +24,6 @@ namespace smith {
             return MatrixMultiply(MatrixMultiply(matScale, matRot), matTrans);
         }
 
-        // Macierz światowa (z rodzicem)
-        Matrix GetWorldMatrix(const Transform* parent) const {
-            Matrix local = GetLocalMatrix();
-            if (parent) {
-                return MatrixMultiply(local, parent->GetLocalMatrix());
-            }
-            return local;
-        }
-
         // Przesuń w kierunku lokalnym
         void Translate(Vector3 offset) {
             position = Vector3Add(position, offset);
