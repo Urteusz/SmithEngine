@@ -1,6 +1,7 @@
 #include "core/Engine.h"
 #include "core/Scene3D.h"
 #include "nodes/Node3D.h"
+#include "nodes/Node2D.h"
 #include "nodes/MeshNode.h"
 
 #ifdef SMITH_DEBUG
@@ -16,10 +17,15 @@ public:
     }
 };
 
-class TestLabel : public Node {
+class TestLabel : public Node2D {
 public:
     Scene3D* sceneParam = nullptr;
     std::string hitTargetName = "None";
+
+    void _Ready() override {
+        this->position = {10.f,10.f};
+        this->size ={200.f,50.f};
+    }
 
     void _Process(float dt) override {
         if (!sceneParam) return;
@@ -47,9 +53,13 @@ public:
     }
 
     void _Render() override {
-        DrawRectangle(20, 20, 250, 60, Fade(BLUE, 0.8f));
-        DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 30, 30, 16, RAYWHITE);
-        DrawText(("Hit: " + hitTargetName).c_str(), 30, 50, 16, RAYWHITE);
+        int x = (int)position.x;
+        int y = (int)position.y;
+        int sizex = (int)size.x;
+        int sizey = (int)size.y;
+        DrawRectangle(x, y, sizex, sizey, Fade(BLUE, 0.8f));
+        DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), x + 10, y + 10, 16, RAYWHITE);
+        DrawText(("Hit: " + hitTargetName).c_str(), x + 10, y + 30, 16, RAYWHITE);
 
         // Rysowanie crosshaira na środku ekranu
         int screenWidth = GetScreenWidth();

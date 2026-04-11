@@ -4,6 +4,7 @@
 #ifdef SMITH_DEBUG
 #include "imgui.h"
 #include "nodes/Node3D.h"
+#include "nodes/Node2D.h"
 #include "core/Scene3D.h"
 #endif
 
@@ -79,6 +80,12 @@ void SceneManager::RenderInspector() {
             ImGui::DragFloat3("Position", &node3d->transform.position.x, 0.1f);
             ImGui::DragFloat3("Rotation", &node3d->transform.rotation.x, 1.0f);
             ImGui::DragFloat3("Scale",    &node3d->transform.scale.x,    0.01f);
+        }
+
+        Node2D* node2d = dynamic_cast<Node2D*>(selectedNode);
+        if (node2d) {
+            ImGui::DragFloat2("Position", &node2d->position.x, 1.0f);
+            ImGui::DragFloat2("Size", &node2d->size.x, 1.0f, 0.f,5000.f);
         }
     } else {
         ImGui::TextDisabled("Nic nie wybrano");

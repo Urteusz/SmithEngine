@@ -76,6 +76,7 @@ set(HEADERS
         include/core/SceneManager.h
         include/core/Transform.h
         include/nodes/Node3D.h
+        include/nodes/Node2D.h
         include/input/InputManager.h
         include/core/Scene3D.h
         include/core/ResourceManager.h
