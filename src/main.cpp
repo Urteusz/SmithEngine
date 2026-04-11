@@ -3,6 +3,12 @@
 #include "nodes/Node3D.h"
 #include "nodes/MeshNode.h"
 
+#ifdef SMITH_DEBUG
+#pragma message("SMITH_DEBUG jest zdefiniowane więc imgui będzie działać")
+#else
+#pragma message("SMITH_DEBUG nie jest zdefiniowane - imgui off.")
+#endif
+
 class TestPlane : public Node3D {
 public:
     void _Render() override {
@@ -71,6 +77,7 @@ int main() {
 
     auto label = std::make_unique<TestLabel>();
     label->sceneParam = scene.get(); // Przekazujemy wskaźnik na scenę
+    label->name = "DebugLabel";
     scene->hud.AddChild(std::move(label));
 
     /** Move(scene) przenosi własność obiektu do sceny, nie da się inaczej, bo używamy unique_ptr */

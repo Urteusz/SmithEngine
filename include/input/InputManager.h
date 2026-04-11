@@ -15,8 +15,11 @@ public:
 
     Vector2 MouseDelta() const;
     void SetMouseLocked(bool locked);
+    bool IsCursorHidden() const;
+    bool IsMouseAvailable() const;
 
 private:
+    bool cursorHidden = false;
     std::unordered_map<std::string, int> bindings;
 };
 

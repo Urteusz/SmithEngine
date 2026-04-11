@@ -16,7 +16,8 @@ public:
     }
 
     void _Render() override {
-        DrawModel(model, transform.position, 1.0f, tint);
-        DrawModelWires(model, transform.position, 1.0f, BLACK);
+        model.transform = transform.GetLocalMatrix();
+        DrawModel(model, {0, 0, 0}, 1.0f, tint);
+        DrawModelWires(model, {0, 0, 0}, 1.0f, BLACK);
     }
 };

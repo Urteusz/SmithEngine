@@ -1,6 +1,12 @@
 #include "core/SceneManager.h"
 #include "core/Scene.h"
 
+#ifdef SMITH_DEBUG
+#include "imgui.h"
+#include "nodes/Node3D.h"
+#include "core/Scene3D.h"
+#endif
+
 SceneManager::SceneManager() {
     root = std::make_unique<Node>();
     root->name = "Root";
@@ -24,6 +30,63 @@ void SceneManager::ProcessNode(Node* node, float dt) {
         ProcessNode(child.get(), dt);
     }
 }
+
+#ifdef SMITH_DEBUG
+void SceneManager::RenderDebugUI() {
+
+    ImGui::Begin("Scene");
+    RenderDebugNode(root.get(), 0);
+    ImGui::End();
+
+    RenderInspector();
+}
+
+void SceneManager::RenderDebugNode(Node* node, int depth) {
+    if (!node) return;
+
+    ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+    if (node->children.empty()) flags |= ImGuiTreeNodeFlags_Leaf;
+
+    ImGui::PushID(node);
+    ImGui::Checkbox("##active", &node->isActive);
+    ImGui::SameLine();
+
+    bool selected = (selectedNode == node);
+    bool open = ImGui::TreeNodeEx(node->name.c_str(), flags | (selected ? ImGuiTreeNodeFlags_Selected : 0));
+    if (ImGui::IsItemClicked()) selectedNode = node;
+
+    if (open) {
+        for (auto& child : node->children)
+            RenderDebugNode(child.get(), depth + 1);
+
+        Scene3D* scene3d = dynamic_cast<Scene3D*>(node);
+        if (scene3d) {
+            scene3d->hud.name = "HUD";
+            RenderDebugNode(&scene3d->hud, depth + 1);
+        }
+
+        ImGui::TreePop();
+    }
+    ImGui::PopID();
+}
+void SceneManager::RenderInspector() {
+    ImGui::Begin("Inspector");
+    if (selectedNode) {
+        ImGui::Text("%s", selectedNode->name.c_str());
+        ImGui::Separator();
+
+        Node3D* node3d = dynamic_cast<Node3D*>(selectedNode);
+        if (node3d) {
+            ImGui::DragFloat3("Position", &node3d->transform.position.x, 0.1f);
+            ImGui::DragFloat3("Rotation", &node3d->transform.rotation.x, 1.0f);
+            ImGui::DragFloat3("Scale",    &node3d->transform.scale.x,    0.01f);
+        }
+    } else {
+        ImGui::TextDisabled("Nic nie wybrano");
+    }
+    ImGui::End();
+}
+#endif
 
 void SceneManager::RenderNode(Node* node) {
     if (!node || !node->isActive) return;

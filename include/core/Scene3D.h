@@ -33,29 +33,35 @@ public:
         input.Bind(KEY_A,            "move_left");
         input.Bind(KEY_SPACE,        "move_up");
         input.Bind(KEY_LEFT_CONTROL, "move_down");
+        input.Bind(KEY_H, "toggle_mouse_lock");
 
         input.SetMouseLocked(true);
     }
 
     void _Process(float dt) override {
-        Vector3 movement = { 0.0f, 0.0f, 0.0f };
-        Vector3 rotation = { 0.0f, 0.0f, 0.0f };
+        if (input.IsPressed("toggle_mouse_lock"))
+            input.SetMouseLocked(!input.IsCursorHidden());
 
-        float speed = 10.0f * dt;
-        float sensitivity = 0.05f;
+        if (input.IsCursorHidden() && input.IsMouseAvailable()) {
+            Vector3 movement = { 0.0f, 0.0f, 0.0f };
+            Vector3 rotation = { 0.0f, 0.0f, 0.0f };
 
-        if (input.IsDown("move_forward"))  movement.x += speed;
-        if (input.IsDown("move_backward")) movement.x -= speed;
-        if (input.IsDown("move_right"))    movement.y += speed;
-        if (input.IsDown("move_left"))     movement.y -= speed;
-        if (input.IsDown("move_up"))       movement.z += speed;
-        if (input.IsDown("move_down"))     movement.z -= speed;
+            float speed = 10.0f * dt;
+            float sensitivity = 0.05f;
 
-        Vector2 mouseDelta = input.MouseDelta();
-        rotation.x = mouseDelta.x * sensitivity;
-        rotation.y = mouseDelta.y * sensitivity;
+            if (input.IsDown("move_forward"))  movement.x += speed;
+            if (input.IsDown("move_backward")) movement.x -= speed;
+            if (input.IsDown("move_right"))    movement.y += speed;
+            if (input.IsDown("move_left"))     movement.y -= speed;
+            if (input.IsDown("move_up"))       movement.z += speed;
+            if (input.IsDown("move_down"))     movement.z -= speed;
 
-        UpdateCameraPro(&camera, movement, rotation, 0.0f);
+            Vector2 mouseDelta = input.MouseDelta();
+            rotation.x = mouseDelta.x * sensitivity;
+            rotation.y = mouseDelta.y * sensitivity;
+
+            UpdateCameraPro(&camera, movement, rotation, 0.0f);
+        }
 
         for (auto& child : hud.children) {
             PropagateProcess(child.get(), dt);
