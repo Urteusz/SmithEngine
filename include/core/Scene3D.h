@@ -40,6 +40,9 @@ public:
     }
 
     void _FixedProcess(float dt) override {
+        for (auto& child : children) {
+            PropagateFixedProcess(child.get(), dt);
+        }
         for (auto& child : hud.children) {
             PropagateFixedProcess(child.get(), dt);
         }

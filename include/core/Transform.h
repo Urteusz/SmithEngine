@@ -32,10 +32,12 @@ namespace smith {
         // Przesuń w kierunku lokalnym
         void Translate(Vector3 offset) {
             position = Vector3Add(position, offset);
+            isDirty = true;
         }
 
         void Rotate(Vector3 eulerDeg) {
             rotation = Vector3Add(rotation, eulerDeg);
+            isDirty = true;
         }
     };
 

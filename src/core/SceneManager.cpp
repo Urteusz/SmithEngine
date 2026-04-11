@@ -31,6 +31,9 @@ void SceneManager::FixedProcessNode(Node* node, float fixedDt) {
 
     node->_FixedProcess(fixedDt);
 
+    // Jeśli to scena — ona sama propaguje do swoich dzieci (jak w RenderNode)
+    if (dynamic_cast<Scene*>(node)) return;
+
     for (auto& child : node->children) {
         FixedProcessNode(child.get(), fixedDt);
     }
