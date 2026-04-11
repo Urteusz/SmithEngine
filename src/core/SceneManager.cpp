@@ -61,7 +61,6 @@ void SceneManager::RenderDebugNode(Node* node, int depth) {
 
         Scene3D* scene3d = dynamic_cast<Scene3D*>(node);
         if (scene3d) {
-            scene3d->hud.name = "HUD";
             RenderDebugNode(&scene3d->hud, depth + 1);
         }
 

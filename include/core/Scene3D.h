@@ -21,6 +21,7 @@ public:
     InputManager input;
 
     void _Ready() override {
+        hud.name = "HUD";
         camera.position   = Vector3{4.0f, 4.0f, 4.0f};
         camera.target     = Vector3{0.0f, 0.0f, 0.0f};
         camera.up         = Vector3{0.0f, 1.0f, 0.0f};
