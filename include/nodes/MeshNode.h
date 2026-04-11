@@ -12,8 +12,7 @@ public:
         resource = Engine::Get().modelsManager.get(path);
 
         if (!resource) {
-            resource = new ModelResource{ LoadModel(path), 0 };
-            Engine::Get().modelsManager.insert(path, resource);
+            resource = Engine::Get().modelsManager.insert(path, ModelResource{ LoadModel(path), 0 });
         }
 
         // Zliczamy licznik wystąpień (przyda się).
@@ -24,7 +23,6 @@ public:
         if (resource && --resource->refCount == 0) {
             UnloadModel(resource->model);
             Engine::Get().modelsManager.remove(_path);
-            delete resource;
         }
     }
 

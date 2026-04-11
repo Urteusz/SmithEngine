@@ -11,7 +11,7 @@ public:
     Node3D() = default;
     ~Node3D() override = default;
 
-    Matrix GetWorldTransform() const;
+    Matrix GetWorldTransform();
 };
 
 #endif //NODE3D_H

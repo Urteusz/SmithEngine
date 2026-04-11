@@ -38,7 +38,7 @@ class ResourceManager {
      */
     struct Slot {
         char key[KeySize]{};
-        T* value = nullptr;
+        T value{};
         uint32_t hash = 0;
         bool occupied = false;
     };
@@ -57,7 +57,8 @@ class ResourceManager {
 
 public:
 
-    void insert(const char* key, T* value) {
+    // Wstawia wartość przez kopię do tablicy i zwraca wskaźnik na jej miejsce w środku.
+    T* insert(const char* key, const T& new_value) {
         uint32_t h = hash(key);
         size_t index = h % Capacity;
 
@@ -66,22 +67,24 @@ public:
 
             if (!slots[probe].occupied) {
                 std::strncpy(slots[probe].key, key, KeySize);
-                slots[probe].value = value;
+                slots[probe].value = new_value;
                 slots[probe].hash = h;
                 slots[probe].occupied = true;
-                return;
+                return &slots[probe].value;
             }
 
             // nadpisanie jeśli ten sam klucz
             if (slots[probe].hash == h &&
                 std::strncmp(slots[probe].key, key, KeySize) == 0) {
-                slots[probe].value = value;
-                return;
+                slots[probe].value = new_value;
+                return &slots[probe].value;
             }
         }
+
+        return nullptr;
     }
 
-    T* get(const char* key) const {
+    T* get(const char* key) {
         uint32_t h = hash(key);
         size_t index = h % Capacity;
 
@@ -94,7 +97,7 @@ public:
 
             if (slots[probe].hash == h &&
                 std::strncmp(slots[probe].key, key, KeySize) == 0) {
-                return slots[probe].value;
+                return &slots[probe].value;
             }
         }
 

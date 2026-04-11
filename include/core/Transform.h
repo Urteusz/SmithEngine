@@ -11,17 +11,22 @@ namespace smith {
         Vector3 position = {0.0f, 0.0f, 0.0f};
         Vector3 rotation = {0.0f, 0.0f, 0.0f};
         Vector3 scale    = {1.0f, 1.0f, 1.0f};
+        bool isDirty = true;
+        mutable Matrix cachedMatrix;
 
-        Matrix GetLocalMatrix() const {
-            Matrix matScale = MatrixScale(scale.x, scale.y, scale.z);
-            Matrix matRot   = MatrixRotateXYZ({
-                rotation.x * DEG2RAD,
-                rotation.y * DEG2RAD,
-                rotation.z * DEG2RAD
-            });
-            Matrix matTrans = MatrixTranslate(position.x, position.y, position.z);
-
-            return MatrixMultiply(MatrixMultiply(matScale, matRot), matTrans);
+        Matrix GetLocalMatrix() {
+            if (isDirty) {
+                Matrix matScale = MatrixScale(scale.x, scale.y, scale.z);
+                Matrix matRot   = MatrixRotateXYZ({
+                    rotation.x * DEG2RAD,
+                    rotation.y * DEG2RAD,
+                    rotation.z * DEG2RAD
+                });
+                Matrix matTrans = MatrixTranslate(position.x, position.y, position.z);
+                cachedMatrix = MatrixMultiply(MatrixMultiply(matScale, matRot), matTrans);
+                isDirty = false;
+            }
+            return cachedMatrix;
         }
 
         // Przesuń w kierunku lokalnym

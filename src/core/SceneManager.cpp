@@ -77,9 +77,11 @@ void SceneManager::RenderInspector() {
 
         Node3D* node3d = dynamic_cast<Node3D*>(selectedNode);
         if (node3d) {
-            ImGui::DragFloat3("Position", &node3d->transform.position.x, 0.1f);
-            ImGui::DragFloat3("Rotation", &node3d->transform.rotation.x, 1.0f);
-            ImGui::DragFloat3("Scale",    &node3d->transform.scale.x,    0.01f);
+            bool changed = false;
+            changed |= ImGui::DragFloat3("Position", &node3d->transform.position.x, 0.1f);
+            changed |= ImGui::DragFloat3("Rotation", &node3d->transform.rotation.x, 1.0f);
+            changed |= ImGui::DragFloat3("Scale",    &node3d->transform.scale.x,    0.01f);
+            if (changed) node3d->transform.isDirty = true;
         }
 
         Node2D* node2d = dynamic_cast<Node2D*>(selectedNode);
