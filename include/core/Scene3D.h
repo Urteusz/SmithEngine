@@ -39,6 +39,12 @@ public:
         input.SetMouseLocked(true);
     }
 
+    void _FixedProcess(float dt) override {
+        for (auto& child : hud.children) {
+            PropagateFixedProcess(child.get(), dt);
+        }
+    }
+
     void _Process(float dt) override {
         if (input.IsPressed("toggle_mouse_lock"))
             input.SetMouseLocked(!input.IsCursorHidden());
@@ -81,6 +87,14 @@ public:
     }
 
 private:
+    void PropagateFixedProcess(Node* node, float dt) {
+        if (!node || !node->isActive) return;
+        node->_FixedProcess(dt);
+        for (auto& child : node->children) {
+            PropagateFixedProcess(child.get(), dt);
+        }
+    }
+
     void PropagateProcess(Node* node, float dt) {
         if (!node || !node->isActive) return;
         node->_Process(dt);

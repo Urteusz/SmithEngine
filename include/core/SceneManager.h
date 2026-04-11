@@ -11,6 +11,7 @@ public:
 
     Node* GetRoot() { return root.get(); }
 
+    void FixedProcessFrame(float fixedDt);
     void ProcessFrame(float dt);
     void RenderFrame();
 
@@ -21,6 +22,7 @@ public:
 private:
     std::unique_ptr<Node> root;
 
+    void FixedProcessNode(Node* node, float fixedDt);
     void ProcessNode(Node* node, float dt);
     void RenderNode(Node* node);
 

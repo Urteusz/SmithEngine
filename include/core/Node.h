@@ -15,6 +15,7 @@ public:
     virtual ~Component() = default;
     virtual void _Ready() {}
     virtual void _Process(float dt) {}
+    virtual void _FixedProcess(float dt) {}
     virtual void _OnDestroy() {}
 };
 
@@ -29,6 +30,7 @@ public:
     virtual ~Node() = default;
 
     virtual void _Ready() {}
+    virtual void _FixedProcess(float dt) {}
     virtual void _Process(float dt) {}
     virtual void _Render() {}
     virtual void _OnDestroy() {}

@@ -13,6 +13,10 @@ SceneManager::SceneManager() {
     root->name = "Root";
 }
 
+void SceneManager::FixedProcessFrame(float fixedDt) {
+    FixedProcessNode(root.get(), fixedDt);
+}
+
 /** Zapytacie się po co ProcessFrame skoro to tylko wrapper, a ja powiem że dlatego żeby nie trzeba było wywoływać root.get() w mainie. */
 void SceneManager::ProcessFrame(float dt) {
     ProcessNode(root.get(), dt);
@@ -20,6 +24,16 @@ void SceneManager::ProcessFrame(float dt) {
 
 void SceneManager::RenderFrame() {
     RenderNode(root.get());
+}
+
+void SceneManager::FixedProcessNode(Node* node, float fixedDt) {
+    if (!node || !node->isActive) return;
+
+    node->_FixedProcess(fixedDt);
+
+    for (auto& child : node->children) {
+        FixedProcessNode(child.get(), fixedDt);
+    }
 }
 
 void SceneManager::ProcessNode(Node* node, float dt) {

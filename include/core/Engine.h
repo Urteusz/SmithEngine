@@ -19,7 +19,8 @@ public:
     static Engine& Get() {return *_instance; }
     ~Engine() = default;
 
-    void Init(int width, int height, const std::string& title, int targetFps = 60);
+    // fixedHz — częstotliwość _FixedProcess (domyślnie 120Hz)
+    void Init(int width, int height, const std::string& title, int targetFps = 60, int fixedHz = 120);
     void Run();
     void Shutdown();
 
@@ -29,6 +30,9 @@ public:
 private:
     SceneManager sceneManager;
     InputManager inputManager;
+
+    float _fixedDt      = 1.0f / 120.0f;
+    float _accumulator  = 0.0f;
 
 };
 
