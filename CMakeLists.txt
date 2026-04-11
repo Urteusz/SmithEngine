@@ -78,6 +78,7 @@ set(HEADERS
         include/nodes/Node3D.h
         include/input/InputManager.h
         include/core/Scene3D.h
+        include/core/ResourceManager.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

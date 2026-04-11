@@ -35,8 +35,8 @@ public:
             MeshNode* meshNode = dynamic_cast<MeshNode*>(child.get());
             if (meshNode && meshNode->isActive) {
                 // Model może mieć wiele meshy, sprawdzamy każdy z nich
-                for (int i = 0; i < meshNode->model.meshCount; i++) {
-                    RayCollision col = GetRayCollisionMesh(ray, meshNode->model.meshes[i], meshNode->GetWorldTransform());
+                for (int i = 0; i < meshNode->resource->model.meshCount; i++) {
+                    RayCollision col = GetRayCollisionMesh(ray, meshNode->resource->model.meshes[i], meshNode->GetWorldTransform());
                     if (col.hit && col.distance < minDistance) {
                         minDistance = col.distance;
                         hitTargetName = meshNode->name;

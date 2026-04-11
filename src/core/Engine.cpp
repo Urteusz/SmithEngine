@@ -1,7 +1,9 @@
 #include "core/Engine.h"
 #include "raylib.h"
 
-// Linkujemy jak jesteśmy w trybie debugu
+Engine* Engine::_instance = nullptr;
+
+// Linkujemy tylko jak jesteśmy w trybie debugu
 #ifdef SMITH_DEBUG
 #include "rlImGui.h"
 #endif
