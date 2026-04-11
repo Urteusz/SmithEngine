@@ -27,6 +27,7 @@ compile_commands.json
 *.ilk
 *.exp
 *.dSYM/
+*.md
 
 # OS
 Desktop.ini
